@@ -1,0 +1,69 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+#define DENSITY 10
+
+struct Interval {
+	int min;
+	int cur;
+	int max;
+};
+
+int isLie(int test) {
+	switch (logic) {
+		case '<':
+			return (test < number) ^ truthy;
+		case '>':
+			return (test > number) ^ truthy;
+		case '=':
+			return (test == number) ^ truthy;
+	}
+	exit(1);
+}
+
+char logic;
+int number;
+char *truthy_buffer = malloc(4);
+int truthy;
+
+int main(void) {
+	int num_hints;
+	scanf("%d\n", &num_hints);
+	struct Interval *all_intervals = calloc(num_hints/DENSITY, sizeof(struct Interval));
+	int count = 1;
+	struct Interval first = {1, 0, 0};
+	*all_intervals = first;
+
+	int i, j;
+	for (i = 0; i < num_hints; i++) {
+		scanf("%c %d %s\n", &logic, &number, truthy_buffer);
+		truthy = *truthy_buffer == 'y' ? 1 : 0;
+
+		int old_count = count;
+		struct Interval interval;
+		struct Interval *from_left = NULL, *equal = NULL, *from_right = NULL;
+		for (j = 0; j < old_count; j++) {
+			interval = *(all_intervals + j);
+			if (isLie(interval.min)) {
+				interval.cur++;
+			} else {
+				interval.max = interval.cur > interval.max ? interval.cur : interval.max;
+				interval.cur = 0;
+			}
+		}
+		switch (logic) {
+			case '=':
+				if (cur_equal == NULL) {
+					struct Interval new = {number, from_left->cur, from_left->max};
+					if (truthy == 1) {
+						new.max = new.cur > new.max ? new.cur : new.max;
+						new.cur = 0;
+					} else {
+						
+					}
+				}
+		}
+	}
+
+	return 0;
+}
